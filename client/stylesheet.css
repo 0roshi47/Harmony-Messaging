@@ -1,0 +1,21 @@
+
+#pseudo {
+    background-color: lightblue;
+}
+#liste-mesage{
+    display: flex;
+}
+#message{
+    background-color: white;
+}
+
+#entree-message {
+    background-color: lightgray;
+}
+
+.vl{
+    border-left: 2px solid gray;
+    height: 500px;
+    margin-left:5px;
+    margin-right:5px;
+}
