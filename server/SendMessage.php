@@ -1,6 +1,7 @@
 <?php
 
 include_once "Connection.php";
+header("Access-Control-Allow-Origin: *");
 
 $postedData = file_get_contents('php://input');
 $data = json_decode($postedData,true);
@@ -17,8 +18,8 @@ $statement->execute([
     ':postDate' => $currentDate,
 ]);
 
-
 http_response_code(201);
+
 echo "Message sent";
 
 ?>

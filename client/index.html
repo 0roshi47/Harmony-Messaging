@@ -1,70 +1,77 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="stylesheet.css" />
-    <title>Harmony messaging</title>
-  </head>
-  <body>
-    <div id="side-panel" style="display: none">
-        <input type="button" onclick="close()">
-      <ul>
-        <li>
-          <div class="salon">
-            <a>Les neuils super prime</a>
-          </div>
-        </li>
-      </ul>
-    </div>
-    <div>
-      <div id="pseudo">
-        <input type="button" value="Voir les salons" onclick="open()" />
-        <p>Mon pseudo</p>
-        <br />
-        <input type="text" class="border-radius-5" />
-      </div>
-      <div id="liste-messages">
-        <div class="message">
-          <p class="content">Il fait plus souvent beau a perpi</p>
-          <span class="color-gray">Pinou</span><span class="vl"></span
-          ><span class="color-gray">il y a 20 min</span>
-          <hr />
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="stylesheet.css" />
+        <title>Harmony Messaging</title>
+    </head>
+    <script src="jquery-4.0.0.min.js"></script>
+    <script src="script.js"></script>
+    <body>
+        <div id="side-panel" style="display: none">
+            <input type="button" onclick="close()" />
+            <ul>
+                <li>
+                    <div class="salon">
+                        <a>Les neuils super prime</a>
+                    </div>
+                </li>
+            </ul>
         </div>
-        <div class="message">
-          <p class="content">C'est clair</p>
-          <span class="color-gray">Broisin</span><span class="vl"></span
-          ><span class="color-gray">il y a 19 min</span>
-          <hr />
+        <div>
+            <div id="pseudo">
+                <input type="button" value="Voir les salons" onclick="open()" />
+                <p>Mon pseudo</p>
+                <br />
+                <input type="text" id="pseudo-field" class="border-radius-5" />
+            </div>
+            <div id="liste-messages">
+                <div class="message">
+                    <p class="content">Il fait plus souvent beau a perpi</p>
+                    <span class="color-gray">Pinou</span><span class="vl"></span
+                    ><span class="color-gray">il y a 20 min</span>
+                    <hr />
+                </div>
+                <div class="message">
+                    <p class="content">C'est clair</p>
+                    <span class="color-gray">Broisin</span
+                    ><span class="vl"></span
+                    ><span class="color-gray">il y a 19 min</span>
+                    <hr />
+                </div>
+                <div class="message">
+                    <p class="content">
+                        Mais monsieur vous installez un malaise de taille
+                        conséquente la
+                    </p>
+                    <span class="color-gray">Pinou</span><span class="vl"></span
+                    ><span class="color-gray">il y a 15 min</span>
+                    <hr />
+                </div>
+            </div>
+            <div id="entree-message">
+                <form class="fed" id="form-message">
+                    <input
+                        type="text"
+                        id="message-field"
+                        value="Envoyer un message"
+                        class="border-radius-5" />
+                    <input
+                        type="submit"
+                        value="Envoyer"
+                        class="border-radius-5" />
+                </form>
+            </div>
         </div>
-        <div class="message">
-          <p class="content">
-            Mais monsieur vous installez un malaise de taille conséquente la
-          </p>
-          <span class="color-gray">Pinou</span><span class="vl"></span
-          ><span class="color-gray">il y a 15 min</span>
-          <hr />
-        </div>
-      </div>
-      <div id="entree-message">
-        <form class="fed">
-          <input
-            type="text"
-            value="Envoyer un message"
-            class="border-radius-5"
-          />
-          <input type="submit" value="Envoyer" class="border-radius-5" />
-        </form>
-      </div>
-    </div>
-    <script>
-      function open() {
-        document.getElementById("side-panel").style.display = "block";
-      }
+        <script>
+            function open() {
+                document.getElementById("side-panel").style.display = "block";
+            }
 
-      function close() {
-        document.getElementById("side-panel").style.display = "none";
-      }
-    </script>
-  </body>
+            function close() {
+                document.getElementById("side-panel").style.display = "none";
+            }
+        </script>
+    </body>
 </html>
