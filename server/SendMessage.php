@@ -9,10 +9,6 @@ $currentDate = date("Y-m-d H:i:s");
 
 $pdo = Connection::getConnection();
 
-echo $postedData;
-
-// return;
-
 $requete = 'INSERT INTO Message (content, author, postDate) VALUES (:content, :author, :postDate)';
 $statement = $pdo->prepare($requete);
 $statement->execute([
@@ -21,5 +17,8 @@ $statement->execute([
     ':postDate' => $currentDate,
 ]);
 
+
+http_response_code(201);
+echo "Message sent";
 
 ?>
