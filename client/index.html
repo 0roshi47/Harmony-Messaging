@@ -9,19 +9,13 @@
     <script src="jquery-4.0.0.min.js"></script>
     <script src="script.js"></script>
     <body>
-        <div id="side-panel" style="display: none">
-            <input type="button" onclick="close()" />
-            <ul>
-                <li>
-                    <div class="salon">
-                        <a>Les neuils super prime</a>
-                    </div>
-                </li>
-            </ul>
+        <div id="side-panel" style="display: none;">
+            <button onclick="close_panel()">Fermer</button>
+            <p> Liste des salons des fdp</p>
         </div>
         <div>
             <div id="pseudo">
-                <input type="button" value="Voir les salons" onclick="open()" />
+                <button onclick="open_panel()">Salons</button>
                 <p>Mon pseudo</p>
                 <br />
                 <input type="text" id="pseudo-field" class="border-radius-5" />
@@ -93,7 +87,8 @@
                         type="text"
                         id="message-field"
                         value="Envoyer un message"
-                        class="border-radius-5" />
+                        class="border-radius-5"
+                        autocomplete="off" />
                     <input
                         type="submit"
                         value="Envoyer"
@@ -102,11 +97,11 @@
             </div>
         </div>
         <script>
-            function open() {
-                document.getElementById("side-panel").style.display = "block";
+            function open_panel() {
+                document.getElementById("side-panel").style.display = "flex";
             }
 
-            function close() {
+            function close_panel() {
                 document.getElementById("side-panel").style.display = "none";
             }
         </script>
