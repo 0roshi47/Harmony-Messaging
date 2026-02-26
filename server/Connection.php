@@ -2,11 +2,11 @@
 
 class Connection {
     
-    private static String $host = "localhost";
+    private static String $host = "mysql-harmony-messaging-backend.alwaysdata.net";
     private static String $port = "3306";
-    private static String $db = "harmony_db";
-    private static String $user = "harmony_connexion";
-    private static String $password = "4\$j;[F+.c$1KrGEa";
+    private static String $db = "harmony-messaging-backend_db";
+    private static String $user = "harmony-messaging-backend";
+    private static String $password = "tw9<0(M,HB\hR=>*";
     private static ?PDO $connection = null;
 
     public static function getConnection(): PDO {
