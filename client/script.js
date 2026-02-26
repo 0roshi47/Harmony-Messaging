@@ -1,7 +1,7 @@
 const GET_MESSAGE_URL =
-    "http://localhost/R4A.10/Harmony-Messaging/server/GetMessage.php?limit=";
+    "http://localhost/Projet/Harmony/Harmony-Messaging/server/GetMessage.php?limit=";
 const POST_MESSAGE_URL =
-    "http://localhost/R4A.10/Harmony-Messaging/server/SendMessage.php";
+    "http://localhost/Projet/Harmony/Harmony-Messaging/server/SendMessage.php";
 
 $(document).ready(function () {
     $("form").on("submit", function (e) {
