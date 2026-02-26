@@ -2,6 +2,7 @@
 
 include_once "Connection.php";
 header("Access-Control-Allow-Origin: *");
+header("Content-Type:application/json; charset=utf-8");//Indique auclient le format de la réponse
 
 if (!isset($_GET['limit'])) {
     http_response_code(400);
