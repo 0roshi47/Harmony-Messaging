@@ -1,125 +1,86 @@
 <!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="stylesheet.css" />
-    <title>Harmony Messaging</title>
-  </head>
+<html lang="fr">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <title>Harmony Messaging</title>
+        <link rel="stylesheet" href="stylesheet.css" />
+        <script src="jquery-4.0.0.min.js"></script>
+        <script src="script.js"></script>
+    </head>
+    <body>
+        <div class="app">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <header class="sidebar-header">
+                    <div class="profile">
+                        <!-- <div class="name">Mon pseudo</div> -->
+                        <input id="pseudo-field" type="text" />
+                    </div>
+                    <button class="new-chat">Nouveau</button>
+                </header>
 
-  <body>
-    <!-- SIDE PANEL (salons) -->
-    <header id="side-panel" style="display: none">
-      <button onclick="close_panel()">Fermer</button>
-      <p>Liste des salons</p>
-    </header>
+                <div class="search">
+                    <input
+                        type="search"
+                        placeholder="Rechercher ou démarrer une nouvelle conversation" />
+                </div>
 
-    <!-- CONTENU PRINCIPAL -->
-    <div id="main-container">
-      <!-- HEADER TOP (pseudo + bouton) -->
-      <div id="pseudo">
-        <button onclick="open_panel()">Salons</button>
-        <p>Mon pseudo</p>
-        <input type="text" id="pseudo-field" class="border-radius-5" />
-      </div>
+                <ul class="chat-list">
+                    <li class="chat active">
+                        <div class="chat-body">
+                            <div class="chat-top">
+                                <span class="chat-name">Pinou</span>
+                                <span class="chat-time">20:10</span>
+                            </div>
+                            <div class="chat-last">
+                                Il fait plus souvent beau à Perpi
+                            </div>
+                        </div>
+                    </li>
+                    <!-- repeat chat items -->
+                </ul>
+            </aside>
 
-      <!-- LISTE DES MESSAGES -->
-      <div id="message-list">
-        <div class="message">
-          <hr />
-          <p class="content">Il fait plus souvent beau à Perpi</p>
-          <span class="color-gray">Pinou</span>
-          <span class="vertical-line"></span>
-          <span class="color-gray">il y a 20 min</span>
-        </div>
+            <!-- Main conversation -->
+            <main class="conversation">
+                <!-- <header class="conv-header">
+                    <div class="conv-left">
+                        <div class="conv-avatar">P</div>
+                        <div class="conv-info">
+                            <div class="conv-name">Pinou</div>
+                            <div class="conv-status">en ligne</div>
+                        </div>
+                    </div>
+                    <div class="conv-actions">
+                        <button class="icon">⋯</button>
+                    </div>
+                </header> -->
 
-        <div class="message">
-          <hr />
-          <p class="content">Encore un message test</p>
-          <span class="color-gray">Pinou</span>
-          <span class="vertical-line"></span>
-          <span class="color-gray">il y a 18 min</span>
-        </div>
-        <div class="message">
-          <hr />
-          <p class="content">Encore un message test</p>
-          <span class="color-gray">Pinou</span>
-          <span class="vertical-line"></span>
-          <span class="color-gray">il y a 18 min</span>
-        </div>
-        <div class="message">
-          <hr />
-          <p class="content">Encore un message test</p>
-          <span class="color-gray">Pinou</span>
-          <span class="vertical-line"></span>
-          <span class="color-gray">il y a 18 min</span>
-        </div>
-        <div class="message">
-          <hr />
-          <p class="content">Encore un message test</p>
-          <span class="color-gray">Pinou</span>
-          <span class="vertical-line"></span>
-          <span class="color-gray">il y a 18 min</span>
-        </div>
-        <div class="message">
-          <hr />
-          <p class="content">Encore un message test</p>
-          <span class="color-gray">Pinou</span>
-          <span class="vertical-line"></span>
-          <span class="color-gray">il y a 18 min</span>
-        </div>
-        <div class="message">
-          <hr />
-          <p class="content">Encore un message test</p>
-          <span class="color-gray">Pinou</span>
-          <span class="vertical-line"></span>
-          <span class="color-gray">il y a 18 min</span>
-        </div>
-        <div class="message">
-          <hr />
-          <p class="content">Encore un message test</p>
-          <span class="color-gray">Pinou</span>
-          <span class="vertical-line"></span>
-          <span class="color-gray">il y a 18 min</span>
-        </div>
-        <div class="message">
-          <hr />
-          <p class="content">Encore un message test</p>
-          <span class="color-gray">Pinou</span>
-          <span class="vertical-line"></span>
-          <span class="color-gray">il y a 18 min</span>
-        </div>
-        
-      </div>
+                <section class="messages" id="messages">
+                    <div class="message from-them">
+                        <div class="bubble">
+                            Il fait plus souvent beau à Perpi
+                            <div class="meta">Pinou • 20:10</div>
+                        </div>
+                    </div>
 
-      <!-- BARRE D'ENVOI -->
-      <div>
-        <form id="entree-message">
-          <input
-            type="text"
-            id="message-field"
-            value="Envoyer un message"
-            class="border-radius-5"
-            autocomplete="off"
-          />
+                    <div class="message from-them">
+                        <div class="bubble">
+                            Oui c'est vrai !
+                            <div class="meta">Moi • 20:12 ✓✓</div>
+                        </div>
+                    </div>
+                </section>
 
-          <input
-            type="submit"
-            value="Envoyer"
-            class="btn-border-radius-hover-scale"
-          />
-        </form>
-      </div>
-    </div>
-
-    <script>
-      function open_panel() {
-        document.getElementById("side-panel").style.display = "flex";
-      }
-
-      function close_panel() {
-        document.getElementById("side-panel").style.display = "none";
-      }
-    </script>
-  </body>
+                <form class="composer" id="composer" autocomplete="off">
+                    <input
+                        id="message-field"
+                        type="text"
+                        placeholder="Envoyer un message" />
+                    <button type="submit" class="send">Envoyer</button>
+                </form>
+            </main>
+        </div>
+    </body>
 </html>

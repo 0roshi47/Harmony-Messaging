@@ -4,17 +4,20 @@ include_once "Connection.php";
 header("Access-Control-Allow-Origin: *");
 header("Content-Type:application/json; charset=utf-8");//Indique auclient le format de la réponse
 
-if (!isset($_GET['limit'])) {
-    http_response_code(400);
-    echo "Requête incorrect, veuillez préciser la limite de message à get";
-    return;
-}
-
-$limit = $_GET['limit'];
-
 $pdo = Connection::getConnection();
 
-$requete = 'select * from Message order by postDate DESC limit '.$limit;
+$requete = 'select * from Message order by postDate DESC';
+
+if (isset($_GET['limit'])) {
+    $limit = $_GET['limit'];
+    if (!is_numeric($limit)) {
+        http_response_code(400);
+        echo json_encode("Paramètre limit incorrecte");
+        return;
+    }
+    $requete = $requete.' limit '.$_GET['limit']; //ajoute une limit à la requête pour get les n derniers messages
+}
+
 $statement = $pdo->query($requete);
 $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
 

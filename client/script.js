@@ -11,6 +11,7 @@ $(document).ready(function () {
         clearMessageField();
         e.preventDefault();
     });
+    getAllMessages(); // rempli tout les messages au lancement du site
 });
 
 function postMessage(message, pseudo) {
@@ -51,21 +52,38 @@ function getLastMessage() {
     });
 }
 
-// function updateMessages() {
-//     $.ajax({
-//         type: "GET",
-//         url: GET_MESSAGE_URL,
-//         success: function (data) {
-//             console.log(data);
-//             alert(data);
-//         },
-//     });
-// }
+function getAllMessages() {
+    $.ajax({
+        type: "GET", //sans parametre le serveur fait une requête sql sans limit de selection, il get tout
+        url: GET_MESSAGE_URL,
+        success: function (data) {
+            for (var i = 0; i < data.length; i++) {
+                createMessage(data[i]);
+            }
+        },
+    });
+}
 
 function createMessage(jsonMessage) {
-    $("#message-list").append(
-        "<p class='content'>" + jsonMessage["content"] + "</p>",
+    const date = new Date(jsonMessage["postDate"]);
+    $("#messages").append(
+        "<div class='message from-them'>" +
+            "<div class='bubble'>" +
+            jsonMessage["content"] +
+            "<div class='meta'>" +
+            jsonMessage["author"] +
+            " • " +
+            date.getHours() +
+            ":" +
+            date.getMinutes() +
+            "</div>" +
+            "</div>" +
+            "</div>",
     );
+    messages.scrollTo({
+        top: messages.scrollHeight,
+        behavior: "smooth",
+    });
 }
 
 function clearMessageField() {
