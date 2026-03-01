@@ -68,10 +68,10 @@ body {
 }
 
 /* Search */
-.search {
+.speudo {
     padding: 12px;
 }
-.search input {
+.speudo input {
     width: 100%;
     padding: 10px 12px;
     border-radius: 10px;

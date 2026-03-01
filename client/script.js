@@ -3,15 +3,20 @@ const GET_MESSAGE_URL =
 const POST_MESSAGE_URL =
     "http://harmony-messaging-backend.alwaysdata.net/SendMessage.php";
 
+const DELAI_RECUPERATIONS_MS = 500; //recupérations des messages toute les 2 secondes
+
 $(document).ready(function () {
     $("form").on("submit", function (e) {
+        e.preventDefault();
         const message = $("#message-field").val();
         const speudo = $("#pseudo-field").val();
-        postMessage(message, speudo);
+        if (message === "" || speudo === "") {
+            return; //vérifie que l'utilisateur a bien renseigné un message et un speudo
+        } else postMessage(message, speudo);
         clearMessageField();
-        e.preventDefault();
     });
     getAllMessages(); // rempli tout les messages au lancement du site
+    setInterval(pollMessages, DELAI_RECUPERATIONS_MS);
 });
 
 function postMessage(message, pseudo) {
@@ -44,10 +49,24 @@ function getLastMessage() {
         url: GET_MESSAGE_URL,
         data: "limit=" + 1, //get le dernier message
         success: function (data) {
-            // console.log(data);
-            // alert(data[0]);
-            // const result = JSON.parse(data);
             createMessage(data[0]);
+        },
+    });
+}
+
+function pollMessages() {
+    const LIMIT = 10;
+    $.ajax({
+        type: "GET",
+        url: GET_MESSAGE_URL,
+        data: "limit=" + LIMIT, //get le dernier message
+        success: function (data) {
+            for (var i = 0; i < data.length; i++) {
+                if (messageAlreadyExist(data[i]["idMessage"])) {
+                    continue;
+                }
+                createMessage(data[i]);
+            }
         },
     });
 }
@@ -76,6 +95,9 @@ function createMessage(jsonMessage) {
             date.getHours() +
             ":" +
             date.getMinutes() +
+            "<input type='hidden' class='message-id' value=" +
+            jsonMessage["idMessage"] +
+            " />" +
             "</div>" +
             "</div>" +
             "</div>",
@@ -84,6 +106,15 @@ function createMessage(jsonMessage) {
         top: messages.scrollHeight,
         behavior: "smooth",
     });
+}
+
+function messageAlreadyExist(messageId) {
+    //renvoie un boolean selon si oui ou non le message est déjà dans la liste html des messages
+    return (
+        $(".message-id").filter(function () {
+            return $(this).val() == messageId;
+        }).length > 0
+    );
 }
 
 function clearMessageField() {
