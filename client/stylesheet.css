@@ -246,13 +246,45 @@ body {
     color: var(--blue-600);
     cursor: pointer;
 }
+/* Sidebar header: vertical stack with centered button */
+.sidebar-header {
+    padding: 14px 16px;
+    border-bottom: 1px solid #eef4ff;
+    display: block; /* stack children vertically */
+}
+.speudo-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center; /* centers the button horizontally */
+}
+.speudo {
+    width: 100%;
+}
+.speudo input {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid #e6eefc;
+    background: #fff;
+}
 
-/* Responsive */
-@media (max-width: 900px) {
-    .app {
-        padding: 12px;
-    }
-    .sidebar {
-        display: none;
+/* make the button full-width but visually centered on narrow panels */
+.new-chat {
+    align-self: center;
+    padding: 8px 14px;
+    border-radius: 8px;
+    background: var(--blue-600);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    min-width: 160px; /* keeps a reasonable button width */
+}
+
+/* Optional: on very small widths make button full width of panel */
+@media (max-width: 420px) {
+    .new-chat {
+        width: calc(100% - 24px);
+        min-width: unset;
     }
 }

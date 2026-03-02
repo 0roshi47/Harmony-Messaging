@@ -13,13 +13,15 @@
             <!-- Sidebar -->
             <aside class="sidebar">
                 <header class="sidebar-header">
-                    <div class="speudo">
-                        <input
-                            id="pseudo-field"
-                            type="text"
-                            placeholder="Renseignez un speudo" />
+                    <div class="speudo-wrap">
+                        <div class="speudo">
+                            <input
+                                id="pseudo-field"
+                                type="text"
+                                placeholder="Renseignez un speudo" />
+                        </div>
+                        <button class="new-chat">Nouvelle room</button>
                     </div>
-                    <button class="new-chat">Nouveau</button>
                 </header>
 
                 <ul class="chat-list">
@@ -53,22 +55,7 @@
                     </div>
                 </header> -->
 
-                <section class="messages" id="messages">
-                    <div class="message from-them">
-                        <div class="bubble">
-                            Il fait plus souvent beau à Perpi
-                            <div class="meta">Pinou • 20:10</div>
-                            <input type="hidden" class="message-id" value="0" />
-                        </div>
-                    </div>
-
-                    <div class="message from-them">
-                        <div class="bubble">
-                            Oui c'est vrai !
-                            <div class="meta">Moi • 20:12 ✓✓</div>
-                        </div>
-                    </div>
-                </section>
+                <section class="messages" id="messages"></section>
 
                 <form class="composer" id="composer" autocomplete="off">
                     <input

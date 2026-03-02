@@ -1,7 +1,7 @@
 const GET_MESSAGE_URL =
-    "http://harmony-messaging-backend.alwaysdata.net/GetMessage.php";
+    "https://harmony-messaging-backend.alwaysdata.net/GetMessage.php";
 const POST_MESSAGE_URL =
-    "http://harmony-messaging-backend.alwaysdata.net/SendMessage.php";
+    "https://harmony-messaging-backend.alwaysdata.net/SendMessage.php";
 
 const DELAI_RECUPERATIONS_MS = 500; //recupérations des messages toute les 2 secondes
 
@@ -9,10 +9,14 @@ $(document).ready(function () {
     $("form").on("submit", function (e) {
         e.preventDefault();
         const message = $("#message-field").val();
-        const speudo = $("#pseudo-field").val();
-        if (message === "" || speudo === "") {
+        const pseudo = $("#pseudo-field").val();
+        if (pseudo === "") {
+            alert("Renseignez un pseudo");
+            return;
+        }
+        if (message === "") {
             return; //vérifie que l'utilisateur a bien renseigné un message et un speudo
-        } else postMessage(message, speudo);
+        } else postMessage(message, pseudo);
         clearMessageField();
     });
     getAllMessages(); // rempli tout les messages au lancement du site
@@ -28,7 +32,7 @@ function postMessage(message, pseudo) {
         data: JSON.stringify({ content: message, author: pseudo }),
         success: function (msg) {
             console.log("Message posté : " + msg);
-            getLastMessage();
+            // getLastMessage();
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.log(
@@ -43,30 +47,15 @@ function postMessage(message, pseudo) {
     });
 }
 
-function getLastMessage() {
-    $.ajax({
-        type: "GET",
-        url: GET_MESSAGE_URL,
-        data: "limit=" + 1, //get le dernier message
-        success: function (data) {
-            createMessage(data[0]);
-        },
-    });
-}
-
 function pollMessages() {
     const LIMIT = 10;
+    console.log("poll");
     $.ajax({
         type: "GET",
         url: GET_MESSAGE_URL,
         data: "limit=" + LIMIT, //get le dernier message
         success: function (data) {
-            for (var i = 0; i < data.length; i++) {
-                if (messageAlreadyExist(data[i]["idMessage"])) {
-                    continue;
-                }
-                createMessage(data[i]);
-            }
+            buildMessageList(data);
         },
     });
 }
@@ -76,11 +65,18 @@ function getAllMessages() {
         type: "GET", //sans parametre le serveur fait une requête sql sans limit de selection, il get tout
         url: GET_MESSAGE_URL,
         success: function (data) {
-            for (var i = 0; i < data.length; i++) {
-                createMessage(data[i]);
-            }
+            buildMessageList(data);
         },
     });
+}
+
+function buildMessageList(messageList) {
+    for (var i = messageList.length - 1; i >= 0; i -= 1) {
+        if (messageAlreadyExist(messageList[i]["idMessage"])) {
+            continue;
+        }
+        createMessage(messageList[i]);
+    }
 }
 
 function createMessage(jsonMessage) {
