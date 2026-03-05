@@ -18,7 +18,7 @@ $statement->execute([
     ':content' => $data["content"],
     ':author' => $data["author"],
     ':postDate' => $currentDate,
-    ]);
+]);
     
 http_response_code(201);
 $response = [

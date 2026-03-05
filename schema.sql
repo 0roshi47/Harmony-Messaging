@@ -1,16 +1,23 @@
-create database harmony-messaging-backend_db;
+drop database `harmony-messaging-backend_db`;
+create database `harmony-messaging-backend_db`;
 
-CREATE USER 'harmony-messaging-backend'@'localhost' IDENTIFIED BY 'tw9<0(M,HB\hR=>*';
-GRANT ALL PRIVILEGES ON harmony-messaging-backend_db.* TO 'harmony-messaging-backend'@'localhost';
+
+drop user `harmony-messaging-backend`@'localhost';
+CREATE USER `harmony-messaging-backend`@'localhost' IDENTIFIED BY 'tw9<0(M,HBhR=>*';
+GRANT ALL PRIVILEGES ON `harmony-messaging-backend_db`.* TO `harmony-messaging-backend`@'localhost';
 FLUSH PRIVILEGES;
 
 drop table if exists Message;
+drop table if exists Author;
+drop table if exists Room;
 
 CREATE TABLE Author (
    authorId int auto_increment,
-   password VARCHAR(50) not null,
-   login VARCHAR(50) not null,
-   PRIMARY KEY(authorId)
+   password VARCHAR(100) not null,
+   email VARCHAR(50) not null,
+   username VARCHAR(50) not null,
+   PRIMARY KEY(authorId),
+   UNIQUE(email)
 );
 
 CREATE TABLE Room (
