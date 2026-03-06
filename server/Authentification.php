@@ -1,9 +1,8 @@
 <?php
 
 require_once "jwt_utils.php";
-
-define("JWT_SECRET", '<7:DPcH]/d)\OpI}');
-define("JWT_TOKEN_DURATION_SECONDS", 60*60*24); //24 heures
+require_once "ConstantDatas.php";
+require_once "Connection.php";
 
 function incorrectData() {
     http_response_code(400);
@@ -14,9 +13,6 @@ function incorrectData() {
     echo json_encode($response);
 }
 
-$USER_PASSWORD_HASH_KEY = '<7:DPcH]/d)\OpI}';
-
-include_once "Connection.php";
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST"); // specify allowed methods
 header("Content-Type:application/json; charset=utf-8");//Indique auclient le format de la réponse
@@ -26,16 +22,11 @@ $data = json_decode($postedData,true);
 
 if (!is_array($data) || !key_exists("password", $data) || !key_exists("email", $data)) {
     http_response_code(400);
-    $response = [
-        'success' => false,
-        'message' => 'Posted data incorrect'
-    ];
-    echo json_encode($response);
+    echo json_encode('Posted data incorrect');
     return;
 }
 
 $pdo = Connection::getConnection();
-
 
 $requete = 'select * from Author where email = :email';
 $statement = $pdo->prepare($requete);
@@ -56,19 +47,14 @@ if (!password_verify($data["password"], $result["password"])) {
 
 $headers = array('alg' => 'HS256', 'typ' => 'JWT');
 $payload = array(
-    'authorId' => $data["authorId"],
-    'username' => $data["username"],
+    'authorId' => $result["authorId"],
+    'username' => $result["username"],
     'exp' => (time() + JWT_TOKEN_DURATION_SECONDS)
 );
 
 $jwt = generate_jwt($headers, $payload, JWT_SECRET);
 
 http_response_code(200);
-$response = [
-    'success' => true,
-    'message' => $jwt
-];
-
-echo json_encode($response);
+echo json_encode($jwt);
 
 ?>

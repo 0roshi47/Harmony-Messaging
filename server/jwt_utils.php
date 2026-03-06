@@ -65,6 +65,15 @@ function get_authorization_header(){
 	return $headers;
 }
 
+function extract_payload($jwt, $secret): string {
+	// split the jwt
+	$tokenParts = explode('.', $jwt);
+	//print_r($tokenParts);
+	$header = base64_decode($tokenParts[0]);
+	$payload = base64_decode($tokenParts[1]);
+	return $payload;
+}
+
 function get_bearer_token() {
     $headers = get_authorization_header();
     
