@@ -1,6 +1,8 @@
 const BASE_URL = "https://localhost/R4A.10/Harmony-Messaging/server/";
 
-const MESSAGE_POLL_FREQUENCY = 500; //recupérations des messages toute les 2 secondes
+const MESSAGE_POLL_FREQUENCY = 500;
+const MESSAGE_POLLED_NUMBER = 10; //limit of messages get each poll
+const ROOM_POLL_FREQUENCY = 2000;
 
 $(document).ready(function () {
     verifyToken();
@@ -20,13 +22,15 @@ $(document).ready(function () {
     // });
     // getAllMessages(); // rempli tout les messages au lancement du site
     // setInterval(pollMessages, MESSAGE_POLL_FREQUENCY);
+    getAllRooms();
 });
 
 function verifyToken() {
     const tokenJWT = localStorage.getItem("token");
     if (!tokenJWT) {
-        window.location.href = "../pages/connection.html";
+        disconnect();
     }
+    //si un token existe on vérifie qu'il soit valide
     $.ajax({
         type: "POST",
         url: BASE_URL + "IsTokenValid.php",
@@ -37,7 +41,7 @@ function verifyToken() {
             console.log(msg["valid"]);
             // msgJson = JSON.parse(msg);
             if (!msg["valid"]) {
-                window.location.href = "../pages/connection.html";
+                disconnect();
             }
         },
         error: function (jqXHR, textStatus, errorThrown) {
@@ -51,6 +55,11 @@ function verifyToken() {
             );
         },
     });
+}
+
+function disconnect() {
+    localStorage.removeItem("token");
+    window.location.href = "../pages/connection.html";
 }
 
 function postMessage(message, pseudo) {
@@ -78,16 +87,44 @@ function postMessage(message, pseudo) {
 }
 
 function pollMessages() {
-    const LIMIT = 10;
     console.log("poll");
     $.ajax({
         type: "GET",
         url: GET_MESSAGE_URL,
-        data: "limit=" + LIMIT, //get le dernier message
+        data: "limit=" + MESSAGE_POLLED_NUMBER, //get le dernier message
         success: function (data) {
             buildMessageList(data);
         },
     });
+}
+
+function getAllRooms() {
+    $.ajax({
+        type: "GET",
+        url: BASE_URL + "GetRoom.php",
+        headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+        success: function (data) {
+            buildMessageList(data);
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log(errorThrown);
+            if (jqXHR.status == "401") {
+                disconnect();
+            }
+        },
+    });
+}
+
+function buildMessageList(roomList) {
+    console.log(roomList);
+    // for (var i = messageList.length - 1; i >= 0; i -= 1) {
+    //     if (messageAlreadyExist(messageList[i]["idMessage"])) {
+    //         continue;
+    //     }
+    //     createMessage(messageList[i]);
+    // }
 }
 
 function getAllMessages() {

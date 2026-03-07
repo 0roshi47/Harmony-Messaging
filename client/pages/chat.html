@@ -6,7 +6,7 @@
         <title>Harmony Messaging</title>
         <link rel="stylesheet" href="../stylesheet.css" />
         <script src="../scripts/jquery-4.0.0.min.js"></script>
-        <script src="../scripts/chat.js"></script>
+        <script src="../scripts/room.js"></script>
     </head>
     <body>
         <div class="app">
@@ -20,23 +20,34 @@
                                 type="text"
                                 placeholder="Nom de la nouvelle room" />
                         </div>
-                        <button class="new-chat">Nouvelle room</button>
+                        <button class="new-room">Nouvelle room</button>
                     </div>
                 </header>
 
-                <ul class="chat-list">
-                    <li class="chat active">
-                        <div class="chat-body">
-                            <div class="chat-top">
-                                <span class="chat-name">Room 1</span>
-                                <span class="chat-time">20:10</span>
+                <ul class="room-list">
+                    <li class="room active">
+                        <div class="room-body">
+                            <div class="room-top">
+                                <span class="room-name">Room 1</span>
+                                <span class="room-time">20:10</span>
                             </div>
-                            <div class="chat-last">
+                            <div class="room-last">
                                 Il fait plus souvent beau à Perpi
                             </div>
                         </div>
                     </li>
-                    <!-- repeat chat items -->
+                    <li class="room active">
+                        <div class="room-body">
+                            <div class="room-top">
+                                <span class="room-name">Room 1</span>
+                                <span class="room-time">20:10</span>
+                            </div>
+                            <div class="room-last">
+                                Il fait plus souvent beau à Perpi
+                            </div>
+                        </div>
+                    </li>
+                    <!-- repeat room items -->
                 </ul>
             </aside>
 
