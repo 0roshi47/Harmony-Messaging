@@ -1,27 +1,57 @@
-const GET_MESSAGE_URL =
-    "https://harmony-messaging-backend.alwaysdata.net/GetMessage.php";
-const POST_MESSAGE_URL =
-    "https://harmony-messaging-backend.alwaysdata.net/SendMessage.php";
+const BASE_URL = "https://localhost/R4A.10/Harmony-Messaging/server/";
 
-const DELAI_RECUPERATIONS_MS = 500; //recupérations des messages toute les 2 secondes
+const MESSAGE_POLL_FREQUENCY = 500; //recupérations des messages toute les 2 secondes
 
 $(document).ready(function () {
-    $("form").on("submit", function (e) {
-        e.preventDefault();
-        const message = $("#message-field").val();
-        const pseudo = $("#pseudo-field").val();
-        if (pseudo === "") {
-            alert("Renseignez un pseudo");
-            return;
-        }
-        if (message === "") {
-            return; //vérifie que l'utilisateur a bien renseigné un message et un speudo
-        } else postMessage(message, pseudo);
-        clearMessageField();
-    });
-    getAllMessages(); // rempli tout les messages au lancement du site
-    setInterval(pollMessages, DELAI_RECUPERATIONS_MS);
+    verifyToken();
+    // $("form").on("submit", function (e) {
+    //     verifyToken();
+    //     e.preventDefault();
+    //     const message = $("#message-field").val();
+    //     const pseudo = $("#pseudo-field").val();
+    //     if (pseudo === "") {
+    //         alert("Renseignez un pseudo");
+    //         return;
+    //     }
+    //     if (message === "") {
+    //         return; //vérifie que l'utilisateur a bien renseigné un message et un speudo
+    //     } else postMessage(message, pseudo);
+    //     clearMessageField();
+    // });
+    // getAllMessages(); // rempli tout les messages au lancement du site
+    // setInterval(pollMessages, MESSAGE_POLL_FREQUENCY);
 });
+
+function verifyToken() {
+    const tokenJWT = localStorage.getItem("token");
+    if (!tokenJWT) {
+        window.location.href = "../pages/connection.html";
+    }
+    $.ajax({
+        type: "POST",
+        url: BASE_URL + "IsTokenValid.php",
+        headers: {
+            Authorization: "Bearer " + tokenJWT,
+        },
+        success: function (msg) {
+            console.log(msg["valid"]);
+            // msgJson = JSON.parse(msg);
+            if (!msg["valid"]) {
+                window.location.href = "../pages/connection.html";
+            }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log(
+                "jqXHR : " +
+                    jqXHR +
+                    " textStatus : " +
+                    textStatus +
+                    " errorThrown : " +
+                    errorThrown,
+            );
+        },
+    });
+}
 
 function postMessage(message, pseudo) {
     console.log("Message : " + message);

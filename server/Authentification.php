@@ -6,11 +6,7 @@ require_once "Connection.php";
 
 function incorrectData() {
     http_response_code(400);
-    $response = [
-        'success' => false,
-        'message' => "Password or email provided doesn't exist." //on precise pas que uniquement le mail est mauvais pour des raisons de securité
-    ];
-    echo json_encode($response);
+    echo json_encode("Password or email is wrong.");
 }
 
 header("Access-Control-Allow-Origin: *");
