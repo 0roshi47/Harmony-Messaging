@@ -5,8 +5,13 @@ include_once "ConstantDatas.php";
 include_once "jwt_utils.php";
 
 header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: POST"); // specify allowed methods
+header("Access-Control-Allow-Methods: POST, OPTIONS"); // specify allowed methods
+header("Access-Control-Allow-Headers: Content-Type, Authorization"); // specify allowed headers
 header("Content-Type:application/json; charset=utf-8");//Indique auclient le format de la réponse
+
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    exit; //empêche le traitement quand ajax envoie la preflight requête
+}
 
 $bearer_token = get_bearer_token();
 
@@ -35,7 +40,7 @@ $pdo = Connection::getConnection();
 $requete = 'INSERT INTO Message (content, postDate, authorId, roomId) VALUES (:content, :postDate, :authorId, :roomId)';
 $statement = $pdo->prepare($requete);
 $statement->execute([
-    ':content' => 'content',
+    ':content' => $data['content'],
     ':postDate' => $currentDate,
     ':authorId' => $payloadData['authorId'],
     ':roomId' => $data['room']

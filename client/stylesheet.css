@@ -95,7 +95,7 @@ body {
     cursor: pointer;
 }
 .room.active {
-    background: linear-gradient(90deg, rgba(11, 120, 255, 0.06), transparent);
+    background: linear-gradient(90deg, rgba(11, 31, 255, 0.2), transparent);
 }
 .room-avatar {
     width: 48px;

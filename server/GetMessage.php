@@ -5,8 +5,13 @@ include_once "ConstantDatas.php";
 include_once "jwt_utils.php";
 
 header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: GET"); // specify allowed methods
+header("Access-Control-Allow-Methods: GET, OPTIONS"); // specify allowed methods
+header("Access-Control-Allow-Headers: Content-Type, Authorization"); // specify allowed headers
 header("Content-Type:application/json; charset=utf-8");//Indique auclient le format de la réponse
+
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    exit; //empêche le traitement quand ajax envoie la preflight requête
+}
 
 $bearer_token = get_bearer_token();
 
@@ -26,7 +31,7 @@ if (!isset($_GET['room'])) {
 
 $room = $_GET['room'];
 
-$requete = 'select * from Message where roomId = :room order by postDate DESC';
+$requete = 'select Message.*, Author.username from Message, Author where Author.authorId = Message.authorId and Message.roomId = :room order by Message.postDate DESC';
     
 if (isset($_GET['limit'])) { //paramètre optionnel
     $limit = $_GET['limit'];
