@@ -1,4 +1,4 @@
-const BASE_URL = "https://localhost/R4A.10/Harmony-Messaging/server/";
+const BASE_URL = "https://harmony-messaging-backend.alwaysdata.net/";
 
 const MESSAGE_POLL_FREQUENCY = 1000;
 const MESSAGE_POLLED_NUMBER = 10; //limit of messages get each poll
@@ -124,6 +124,9 @@ function resetMessageList() {
 function createRoom(jsonRoom) {
     var $roomHtml;
     var roomId = jsonRoom["roomId"];
+    if (!localStorage.getItem("selectedRoomId")) {
+        localStorage.setItem("selectedRoomId", roomId);
+    }
     isActive = roomId == localStorage.getItem("selectedRoomId");
     if (isActive) {
         $roomHtml = $("<li class='room active'></li>");

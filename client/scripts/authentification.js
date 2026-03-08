@@ -1,4 +1,4 @@
-const BASE_URL = "https://localhost/R4A.10/Harmony-Messaging/server/";
+const BASE_URL = "https://harmony-messaging-backend.alwaysdata.net/";
 
 $(document).ready(function () {
     $("#inscriptionForm").on("submit", submitInscriptionForm);

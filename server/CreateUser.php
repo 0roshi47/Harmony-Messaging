@@ -1,8 +1,7 @@
 <?php
 
-$USER_PASSWORD_HASH_KEY = '<7:DPcH]/d)\OpI}';
-
 include_once "Connection.php";
+
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST"); // specify allowed methods
 header("Content-Type:application/json; charset=utf-8");//Indique auclient le format de la réponse
