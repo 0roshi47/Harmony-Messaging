@@ -23,7 +23,8 @@ if (!$bearer_token || !is_jwt_valid($bearer_token, JWT_SECRET)) {
 
 $pdo = Connection::getConnection();
 
-$requete = 'select * from Room;';
+//requete qui renvoie les rooms avec les messages les plus récents d'abord
+$requete = 'SELECT r.*, MAX(m.postDate) AS lastMessageDate FROM Room r LEFT JOIN Message m ON r.roomId = m.roomId GROUP BY r.roomId, r.roomName ORDER BY lastMessageDate ASC';
 
 $statement = $pdo->prepare($requete);
 $statement->execute();

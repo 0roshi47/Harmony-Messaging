@@ -18,7 +18,7 @@ $bearer_token = get_bearer_token();
 if (!$bearer_token || !is_jwt_valid($bearer_token, JWT_SECRET)) {
     http_response_code(401);
     echo json_encode("Bearer token invalid or not supplied.");
-    return;
+    exit;
 }
 
 $payload = extract_payload($bearer_token, JWT_SECRET);
@@ -34,10 +34,28 @@ if (!is_array($data) || !key_exists("roomName", $data)) {
         'message' => 'Posted data incorrect'
     ];
     echo json_encode($response);
-    return;
+    exit;
 }
 
 $pdo = Connection::getConnection();
+
+//verifie si le nom de la room est déjà pris
+$roomNameExist = 'select * from Room where roomName = :roomName';
+$statement = $pdo->prepare($roomNameExist);
+$statement->execute([
+    ':roomName' => $data["roomName"],
+]);
+$result = $statement->fetch(\PDO::FETCH_ASSOC);
+
+if ($result) {
+    http_response_code(400);
+    $response = [
+        'success' => false,
+        'message' => 'Room name already exist.'
+    ];
+    echo json_encode($response);
+    exit;
+}
 
 $requete = 'insert into Room(roomName, authorId) values(:roomName, :authorId)';
 $statement = $pdo->prepare($requete);

@@ -8,8 +8,8 @@ GRANT ALL PRIVILEGES ON `harmony-messaging-backend_db`.* TO `harmony-messaging-b
 FLUSH PRIVILEGES;
 
 drop table if exists Message;
-drop table if exists Author;
 drop table if exists Room;
+drop table if exists Author;
 
 CREATE TABLE Author (
    authorId int auto_increment,
@@ -25,7 +25,8 @@ CREATE TABLE Room (
    roomName VARCHAR(50) not null,
    authorId INT not null,
    PRIMARY KEY(roomId),
-   FOREIGN KEY(authorId) REFERENCES Author(authorId)
+   FOREIGN KEY(authorId) REFERENCES Author(authorId),
+   UNIQUE(roomName)
 );
 
 CREATE TABLE Message (

@@ -353,3 +353,17 @@ body {
         width: 92%;
     }
 }
+
+.logout-button {
+    background: var(--blue-600);
+    color: #fff;
+    padding: 10px 14px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin: 12px; /* Adds some space around the button */
+    width: calc(100% - 24px); /* Ensures full width except for margins */
+}
+.logout-button:hover {
+    background: var(--blue-500); /* Change color on hover */
+}

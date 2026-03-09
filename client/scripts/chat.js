@@ -19,6 +19,7 @@ $(document).ready(function () {
         const roomName = $("#room-name-field").val();
         postRoom(roomName);
     });
+    $(".logout-button").click(disconnect);
     getAllMessages(); // rempli tout les messages au lancement du site
     setInterval(pollMessages, MESSAGE_POLL_FREQUENCY);
     setInterval(getAllRooms, ROOM_POLL_FREQUENCY);
@@ -81,10 +82,13 @@ function postRoom(roomName) {
         data: JSON.stringify({ roomName: roomName }),
         success: function (msg) {
             console.log("Room crée : " + msg);
+            $("#room-name-field").val("");
         },
         error: function (jqXHR, textStatus, errorThrown) {
             if (jqXHR.status == "401") {
                 disconnect();
+            } else if (jqXHR.status == "400") {
+                alert("Nom de room déjà existant");
             }
         },
     });
@@ -210,8 +214,7 @@ function buildMessageList(messageList) {
     for (var i = messageList.length - 1; i >= 0; i -= 1) {
         if (messageAlreadyExist(messageList[i]["messageId"])) {
             continue;
-        }
-        if (
+        } else if (
             messageList[i]["roomId"] != localStorage.getItem("selectedRoomId")
         ) {
             continue;
@@ -222,6 +225,15 @@ function buildMessageList(messageList) {
 
 function createMessage(jsonMessage) {
     const date = new Date(jsonMessage["postDate"]);
+    var dateAffichage = "";
+    if (date.getHours() < 10) {
+        dateAffichage += "0";
+    }
+    dateAffichage += date.getHours() + ":";
+    if (date.getMinutes() < 10) {
+        dateAffichage += "0";
+    }
+    dateAffichage += date.getMinutes();
     $("#messages").append(
         "<div class='message from-them'>" +
             "<div class='bubble'>" +
@@ -229,9 +241,7 @@ function createMessage(jsonMessage) {
             "<div class='meta'>" +
             jsonMessage["username"] +
             " • " +
-            date.getHours() +
-            ":" +
-            date.getMinutes() +
+            dateAffichage +
             "<input type='hidden' class='message-id' value=" +
             jsonMessage["messageId"] +
             " />" +
