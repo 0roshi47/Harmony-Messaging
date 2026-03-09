@@ -1,8 +1,8 @@
-const BASE_URL = "https://harmony-messaging-backend.alwaysdata.net/";
-
+const BASE_URL = "https://localhost/R4A.10/Harmony-Messaging/server/";
+// const BASE_URL = "https://harmony-messaging-backend.alwaysdata.net/";
 const MESSAGE_POLL_FREQUENCY = 1000;
-const MESSAGE_POLLED_NUMBER = 10; //limit of messages get each poll
 const ROOM_POLL_FREQUENCY = 2000;
+const MESSAGE_POLLED_NUMBER = 10; //limit of messages get each poll
 
 $(document).ready(function () {
     verifyToken();
@@ -15,8 +15,13 @@ $(document).ready(function () {
         } else postMessage(message, localStorage.getItem("selectedRoomId"));
         clearMessageField();
     });
+    $(".new-room").click(function () {
+        const roomName = $("#room-name-field").val();
+        postRoom(roomName);
+    });
     getAllMessages(); // rempli tout les messages au lancement du site
     setInterval(pollMessages, MESSAGE_POLL_FREQUENCY);
+    setInterval(getAllRooms, ROOM_POLL_FREQUENCY);
     getAllRooms();
 });
 
@@ -56,6 +61,26 @@ function postMessage(message, roomId) {
         data: JSON.stringify({ content: message, room: roomId }),
         success: function (msg) {
             console.log("Message posté : " + msg);
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            if (jqXHR.status == "401") {
+                disconnect();
+            }
+        },
+    });
+}
+
+function postRoom(roomName) {
+    console.log("Room name : " + roomName);
+    $.ajax({
+        type: "POST",
+        url: BASE_URL + "CreateRoom.php",
+        headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+        data: JSON.stringify({ roomName: roomName }),
+        success: function (msg) {
+            console.log("Room crée : " + msg);
         },
         error: function (jqXHR, textStatus, errorThrown) {
             if (jqXHR.status == "401") {
@@ -118,6 +143,7 @@ function resetRoomList() {
 }
 
 function resetMessageList() {
+    console.log("reset message list");
     $(".messages").empty();
 }
 
@@ -161,7 +187,6 @@ function createRoom(jsonRoom) {
 }
 
 function getAllMessages() {
-    resetMessageList();
     $.ajax({
         type: "GET", //sans parametre le serveur fait une requête sql sans limit de selection, il get tout
         headers: {
@@ -170,6 +195,7 @@ function getAllMessages() {
         url: BASE_URL + "GetMessage.php",
         data: "room=" + localStorage.getItem("selectedRoomId"), //get le dernier message
         success: function (data) {
+            resetMessageList();
             buildMessageList(data);
         },
         error: function (jqXHR, textStatus, errorThrown) {
@@ -183,6 +209,11 @@ function getAllMessages() {
 function buildMessageList(messageList) {
     for (var i = messageList.length - 1; i >= 0; i -= 1) {
         if (messageAlreadyExist(messageList[i]["messageId"])) {
+            continue;
+        }
+        if (
+            messageList[i]["roomId"] != localStorage.getItem("selectedRoomId")
+        ) {
             continue;
         }
         createMessage(messageList[i]);

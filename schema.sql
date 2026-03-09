@@ -23,7 +23,9 @@ CREATE TABLE Author (
 CREATE TABLE Room (
    roomId int auto_increment,
    roomName VARCHAR(50) not null,
-   PRIMARY KEY(roomId)
+   authorId INT not null,
+   PRIMARY KEY(roomId),
+   FOREIGN KEY(authorId) REFERENCES Author(authorId)
 );
 
 CREATE TABLE Message (

@@ -1,8 +1,8 @@
 <?php
 
-include_once "Connection.php";
-include_once "ConstantDatas.php";
-include_once "jwt_utils.php";
+require_once "jwt_utils.php";
+require_once "ConstantDatas.php";
+require_once "Connection.php";
 
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST, OPTIONS"); // specify allowed methods
@@ -27,26 +27,31 @@ $payloadData = json_decode($payload, true);
 $postedData = file_get_contents('php://input');
 $data = json_decode($postedData,true);
 
-if (!is_array($data) || !key_exists("content", $data) || !key_exists("room", $data)) {
+if (!is_array($data) || !key_exists("roomName", $data)) {
     http_response_code(400);
-    echo json_encode('Posted data incorrect');
+    $response = [
+        'success' => false,
+        'message' => 'Posted data incorrect'
+    ];
+    echo json_encode($response);
     return;
 }
 
-$currentDate = date("Y-m-d H:i:s");
-
 $pdo = Connection::getConnection();
 
-$requete = 'INSERT INTO Message (content, postDate, authorId, roomId) VALUES (:content, :postDate, :authorId, :roomId)';
+$requete = 'insert into Room(roomName, authorId) values(:roomName, :authorId)';
 $statement = $pdo->prepare($requete);
 $statement->execute([
-    ':content' => $data['content'],
-    ':postDate' => $currentDate,
-    ':authorId' => $payloadData['authorId'],
-    ':roomId' => $data['room']
+    ':roomName' => $data["roomName"],
+    ':authorId' => $payloadData["authorId"],
 ]);
     
 http_response_code(201);
-echo json_encode("Message sent successfully.");
+$response = [
+    'success' => true,
+    'message' => 'Room created successfully.'
+];
+
+echo json_encode($response);
 
 ?>
