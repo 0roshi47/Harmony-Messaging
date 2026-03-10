@@ -1,7 +1,8 @@
-const BASE_URL = "https://localhost/R4A.10/Harmony-Messaging/server/";
-// const BASE_URL = "https://harmony-messaging-backend.alwaysdata.net/";
-const MESSAGE_POLL_FREQUENCY = 1000;
-const ROOM_POLL_FREQUENCY = 2000;
+const BASE_URL = "https://harmony-messaging-backend.alwaysdata.net/";
+// const BASE_URL = "https://localhost/R4A.10/Harmony-Messaging/server/";
+
+const MESSAGE_POLL_FREQUENCY = 500;
+const ROOM_POLL_FREQUENCY = 1000;
 const MESSAGE_POLLED_NUMBER = 10; //limit of messages get each poll
 
 $(document).ready(function () {
@@ -48,7 +49,7 @@ function verifyToken() {
 
 function disconnect() {
     localStorage.removeItem("token");
-    window.location.href = "../pages/connection.html";
+    window.location.href = "../index.html";
 }
 
 function postMessage(message, roomId) {
