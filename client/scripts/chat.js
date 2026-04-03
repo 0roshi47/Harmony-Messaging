@@ -1,8 +1,8 @@
 const BASE_URL = "https://harmony-messaging-backend.alwaysdata.net/";
 // const BASE_URL = "https://localhost/R4A.10/Harmony-Messaging/server/";
 
-const MESSAGE_POLL_FREQUENCY = 500;
-const ROOM_POLL_FREQUENCY = 1000;
+const MESSAGE_POLL_FREQUENCY = 1000;
+const ROOM_POLL_FREQUENCY = 2000;
 const MESSAGE_POLLED_NUMBER = 10; //limit of messages get each poll
 
 $(document).ready(function () {
@@ -73,7 +73,10 @@ function postMessage(message, roomId) {
 }
 
 function postRoom(roomName) {
-    console.log("Room name : " + roomName);
+    if (roomName == "") {
+        alert("Nom de room vide");
+        return;
+    }
     $.ajax({
         type: "POST",
         url: BASE_URL + "CreateRoom.php",
@@ -170,10 +173,6 @@ function createRoom(jsonRoom) {
             "<span class='room-name'>" +
             jsonRoom["roomName"] +
             "</span>" +
-            "<span class='room-time'>20:10</span>" +
-            "</div>" +
-            "<div class='room-last'>" +
-            "Il fait plus souvent beau à Perpi" +
             "</div>" +
             "</div>" +
             "</li>",
